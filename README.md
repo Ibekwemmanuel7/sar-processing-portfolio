@@ -22,7 +22,7 @@ Weighted reference case: Hamming weighting (alpha = 0.75), replica range filter.
 The thresholds are **self-defined demonstration requirements**. They are not an MDA, ESA or Sentinel-1
 acceptance specification.
 
-| Metric | Demonstration requirement | Analytic model | Measured (4 targets, MATLAB/Octave) | Result |
+| Metric | Demonstration requirement | Analytic model | Measured (4 targets, GNU Octave) | Result |
 |---|---|---|---|---|
 | Slant-range IRW | <= 5.5 m | 4.99 m | 5.03 to 5.04 m | PASS |
 | Azimuth IRW | <= 6.5 m | 6.21 m | 6.24 to 6.27 m | PASS |
