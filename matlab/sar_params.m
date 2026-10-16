@@ -23,7 +23,8 @@ p.targets = [   0      0   1.0;
               -150   -200   0.8;
                200    250   0.6;
                100   -350   0.5];
-% example requirement (weighted processing, alpha = 0.75) and verification tolerance
+% self-defined demonstration requirements (weighted processing, alpha = 0.75) and verification tolerance;
+% not an MDA, ESA or Sentinel-1 acceptance specification
 p.spec.irw_rg_m  = 5.5;    % slant-range resolution, -3 dB width (m)
 p.spec.irw_az_m  = 6.5;    % azimuth resolution, -3 dB width (m)
 p.spec.pslr_db   = -20.0;  % peak sidelobe ratio (dB), both directions

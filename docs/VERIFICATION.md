@@ -1,11 +1,13 @@
 # Verification record
 
-Run: `matlab/run_all.m` in GNU Octave (same code runs in MATLAB). Full output: `octave_verification.txt`.
+Run: `matlab/run_all.m` in GNU Octave. The code is written to be MATLAB-compatible but has not yet been run
+in MATLAB. Full output: `octave_verification.txt`. A separate Python implementation (`python/`) is used for
+numerical comparison; it shares the model assumptions, so it is not an independent validation.
 
 ## Method
 1. Simulate raw echoes for four point targets (input SNR 0 dB per sample).
 2. Focus with the range-Doppler algorithm, three cases: unweighted with replica range filter; Hamming
-   (alpha 0.75) with the analytic POSP filter; Hamming with the replica filter (operational).
+   (alpha 0.75) with the analytic POSP filter; Hamming with the replica filter (weighted reference case).
 3. For each target, upsample a 32 x 32 patch by 16 and measure -3 dB width (IRW), peak sidelobe ratio
    (PSLR), integrated sidelobe ratio (ISLR, sidelobes outside the first nulls) and peak location error.
 4. Compute the analytic IRF from the processed spectra (range: rectangle x Hamming; azimuth: two-way
@@ -13,7 +15,9 @@ Run: `matlab/run_all.m` in GNU Octave (same code runs in MATLAB). Full output: `
 5. Check each metric against the requirement table in `sar_params.m`, and the measured IRW against the
    model within 3 percent. Compute NESZ across the swath from the radar equation.
 
-## Requirement table (example, weighted processing)
+## Requirement table (self-defined demonstration requirements, weighted processing)
+
+These thresholds were set for this exercise. They are not an MDA, ESA or Sentinel-1 acceptance specification.
 
 | Parameter | Requirement |
 |---|---|

@@ -1,5 +1,5 @@
 %RUN_ALL  Simulate, focus, measure and verify against the requirement and the analytic model.
-%   Two processing cases: unweighted (alpha = 1.0) and Hamming-weighted (alpha = 0.75, operational).
+%   Two processing cases: unweighted (alpha = 1.0) and Hamming-weighted (alpha = 0.75, weighted reference case).
 %   Writes results/irf_metrics.csv, results/nesz.csv and results/verification.txt.
 p0 = sar_params();
 pf = {'FAIL', 'PASS'};
