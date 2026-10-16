@@ -33,7 +33,7 @@ Octave, with a separate Python implementation for numerical comparison.
 ## 2. Proving it works
 
 Every run measures the image quality and compares it with an analytic model and with self-defined
-demonstration requirements (not an MDA, ESA or Sentinel-1 specification). All checks pass.
+demonstration requirements and all checks pass.
 
 | Check | Requirement | Result |
 |---|---|---|
