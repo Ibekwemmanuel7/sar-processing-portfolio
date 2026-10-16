@@ -44,7 +44,7 @@ demonstration requirements (not an MDA, ESA or Sentinel-1 specification). All ch
 
 **A defect the verification caught.** The first version failed the sidelobe check on three of four
 targets. I traced the cause to the interpolator that corrects range migration, replaced it with a
-16-tap Kaiser-windowed design, and added a test so the defect cannot return. Details:
+16-tap Kaiser-windowed design, and added a regression test to detect recurrence of this failure. Details:
 [docs/VERIFICATION.md](docs/VERIFICATION.md).
 
 ## 3. Testing a detector against known truth
@@ -87,7 +87,7 @@ Sentinel-1 radar into calibrated products and puts them beside thermal, optical 
 - **Creek slick detector:** compares each water pixel with its own 9-month history, then applies
   smoothness, dual-polarisation, wind and persistence tests to reject look-alikes.
 - **Vessel detector:** bright targets above the local sea background, with fixed platforms flagged.
-- **Delivery:** time-lapse videos, a web API, and more than 360 automated tests run in CI.
+- **Delivery:** time-lapse videos, a web API, and an automated test suite (pytest) that gates every change in CI.
 
 The dark-spot counts are image-derived indicators, not spill counts. The code is in a private repository.
 
@@ -96,8 +96,9 @@ The dark-spot counts are image-derived indicators, not spill counts. The code is
 ![Triton](docs/media/triton_offshore.gif)
 
 Triton finds possible slicks and vessels in Sentinel-1 scenes over the Gulf of Guinea and puts them on
-an analyst review map with ship-tracking (AIS) context. Its ResNet34 U-Net slick model agrees with a
-public slick catalogue at pixel F1 0.67, against 0.32 for a classical method, on eight held-out scenes.
+an analyst review map with ship-tracking (AIS) context. Its ResNet34 U-Net slick model reached pixel F1 agreement of 0.67 (against 0.32 for a classical
+method) on eight held-out scenes selected around known Cerulean slicks; this is catalog agreement, not
+independent field accuracy.
 Everything Triton outputs is a candidate for review. The code is in a private repository.
 
 ## 7. Supporting experiment: time-domain backprojection
@@ -106,7 +107,7 @@ Everything Triton outputs is a candidate for review. The code is in a private re
 
 An earlier, separate Python lab forms images by backprojection to show how bandwidth, aperture length
 and platform motion error change the image: doubling the bandwidth halves the range width (3.25 to
-1.63 m), and motion error removes most of the focused energy (peak 0.99 to 0.27).
+1.63 m), and motion error reduces the focused peak amplitude from 0.99 to 0.27.
 [Walkthrough video](docs/media/backprojection_walkthrough.mp4).
 
 ---
