@@ -1,6 +1,6 @@
 # SAR processing portfolio: simulator, range-Doppler processor and verification
 
-Emmanuel Chidi Ibekwe · M.Sc. Atmospheric Science, Texas A&M University · Houston, TX
+Emmanuel Chidi Ibekwe · M.Sc. Atmospheric Science, Texas A&M University · College Station, TX
 
 This repository shows end-to-end SAR processing work in **MATLAB** (runs in MATLAB or GNU Octave) with a
 matching **Python** implementation used as an independent cross-check:
