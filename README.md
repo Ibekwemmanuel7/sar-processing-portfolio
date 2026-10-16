@@ -1,11 +1,118 @@
-# SAR processing portfolio: simulator, range-Doppler processor and verification
+# SAR processing portfolio: Emmanuel Chidi Ibekwe
 
-Emmanuel Chidi Ibekwe · M.Sc. Atmospheric Science, Texas A&M University · College Station, TX
+![banner](docs/media/banner.png)
 
-This repository shows end-to-end SAR processing work in **MATLAB-compatible code, executed and verified in
-GNU Octave** (it has not yet been run in MATLAB itself), with a **separate Python implementation for
-numerical comparison**. The Python version shares the same model assumptions, so agreement between the two
-checks the coding, not the physics.
+I build software that turns raw synthetic aperture radar (SAR) data into sharp images, checks the
+images against requirements, and uses real satellite radar to monitor ships, platforms and possible oil
+slicks. This page shows that work in pictures first. The engineering detail and the code follow below.
+
+**Watch the 2-minute overview:** [portfolio_reel.mp4](docs/media/portfolio_reel.mp4)
+
+Emmanuel Chidi Ibekwe · M.Sc. Atmospheric Science, Texas A&M University · College Station, TX ·
+[LinkedIn](https://www.linkedin.com/in/ibekwemmanuel7) · ibekwemmanuel@gmail.com
+
+## At a glance
+
+| What a SAR processing engineer does | What I built | Where to see it |
+|---|---|---|
+| Process raw SAR data into images | A range-Doppler processor and a raw-data simulator | [1. Processing](#1-from-raw-echoes-to-a-sharp-image) |
+| Model and verify performance against requirements | Automatic measurement of resolution, sidelobes, position and sensitivity; two defects found and fixed | [2. Verification](#2-proving-it-works) |
+| Build simulators for testing | A sea-clutter and oil-slick simulator with known truth | [3. Detector test](#3-testing-a-detector-against-known-truth) |
+| Work with real satellite data | Sentinel-1 radar time series over two offshore incidents | [4. Real data](#4-real-sentinel-1-radar) |
+| Deliver to users and software teams | LillieWatch site monitoring and Triton offshore watch, with tested code and an API | [5. LillieWatch](#5-lilliewatch-weekly-site-monitoring-personal-project), [6. Triton](#6-triton-offshore-watch-personal-project) |
+
+## 1. From raw echoes to a sharp image
+
+![focusing](docs/media/focusing.gif)
+
+A radar satellite records echoes that are smeared over kilometres. My processor
+(`matlab/rda_focus.m`) compresses them in three steps into four sharp points, each about 5 m by 6 m,
+within 0.14 m of their true positions. The code is MATLAB-compatible, executed and verified in GNU
+Octave, with a separate Python implementation for numerical comparison.
+
+## 2. Proving it works
+
+Every run measures the image quality and compares it with an analytic model and with self-defined
+demonstration requirements (not an MDA, ESA or Sentinel-1 specification). All checks pass.
+
+| Check | Requirement | Result |
+|---|---|---|
+| Sharpness (resolution) | 5.5 m by 6.5 m or better | 5.0 m by 6.3 m |
+| Sidelobes (unwanted echoes next to a target) | at least 20 dB below the peak | 20.5 to 27.5 dB below |
+| Position error | 1 m or less | 0.14 m or less |
+| Sensitivity to weak targets (NESZ) | -22 dB or better | -28.8 to -22.2 dB (model) |
+
+**A defect the verification caught.** The first version failed the sidelobe check on three of four
+targets. I traced the cause to the interpolator that corrects range migration, replaced it with a
+16-tap Kaiser-windowed design, and added a test so the defect cannot return. Details:
+[docs/VERIFICATION.md](docs/VERIFICATION.md).
+
+## 3. Testing a detector against known truth
+
+![slick detection](docs/media/slick_detection.gif)
+
+A simulator makes a radar sea surface with a slick of known size and darkness, so the detector can be
+scored exactly. It finds 80 percent of the slick at 6 dB contrast and 91 percent at 10 dB, with very
+few false alarms on open sea.
+
+## 4. Real Sentinel-1 radar
+
+<table><tr>
+<td width="50%"><img src="docs/media/trinity_spirit_2022.gif" alt="Trinity Spirit"><br>
+<b>Trinity Spirit FPSO, offshore Nigeria, 2022.</b> The vessel is a bright point before the
+2 February explosion; afterwards, dark features consistent with possible surface slicks appear and then disperse.</td>
+<td width="50%"><img src="docs/media/wakashio_2020.gif" alt="Wakashio"><br>
+<b>MV Wakashio, Mauritius, 2020.</b> Radar passes through the grounding, the spill and the
+break-up of the ship.</td>
+</tr></table>
+
+Radar sees through cloud and at night. Dark sea means smooth water, which can be oil but can also be
+calm wind, so every dark feature is a lead for verification, not a confirmed spill. NASA FIRMS thermal
+detections corroborate the fire on 2 February 2022; they cannot establish oil composition or source.
+
+## 5. LillieWatch: weekly site monitoring (personal project)
+
+<table><tr>
+<td width="45%"><img src="docs/media/lilliewatch_bodo_sar.gif" alt="LillieWatch SAR"></td>
+<td width="55%"><img src="docs/media/lilliewatch_bodo_all_sensors.gif" alt="LillieWatch all sensors"></td>
+</tr></table>
+
+LillieWatch is my monitoring system for oil and gas sites in the Niger Delta. Every week it processes
+Sentinel-1 radar into calibrated products and puts them beside thermal, optical and gas data:
+
+- **Radar preparation:** Sentinel-1 GRD, IW mode, VV and VH in dB at 10 m, fixed orbit geometry,
+  weekly median composites to reduce speckle.
+- **Change detection in physical units:** each week against a 4-week baseline (a shift of 1.5 dB or
+  more and 3 standard deviations), with more confidence when other sensors agree.
+- **Creek slick detector:** compares each water pixel with its own 9-month history, then applies
+  smoothness, dual-polarisation, wind and persistence tests to reject look-alikes.
+- **Vessel detector:** bright targets above the local sea background, with fixed platforms flagged.
+- **Delivery:** time-lapse videos, a web API, and more than 360 automated tests run in CI.
+
+The dark-spot counts are image-derived indicators, not spill counts. The code is in a private repository.
+
+## 6. Triton: offshore watch (personal project)
+
+![Triton](docs/media/triton_offshore.gif)
+
+Triton finds possible slicks and vessels in Sentinel-1 scenes over the Gulf of Guinea and puts them on
+an analyst review map with ship-tracking (AIS) context. Its ResNet34 U-Net slick model agrees with a
+public slick catalogue at pixel F1 0.67, against 0.32 for a classical method, on eight held-out scenes.
+Everything Triton outputs is a candidate for review. The code is in a private repository.
+
+## 7. Supporting experiment: time-domain backprojection
+
+![backprojection](docs/figures/fig6_backprojection.png)
+
+An earlier, separate Python lab forms images by backprojection to show how bandwidth, aperture length
+and platform motion error change the image: doubling the bandwidth halves the range width (3.25 to
+1.63 m), and motion error removes most of the focused energy (peak 0.99 to 0.27). I built it with AI
+coding assistance; its MATLAB reference script has not been run.
+[Walkthrough video](docs/media/backprojection_walkthrough.mp4).
+
+---
+
+## Technical detail (for engineers)
 
 | Job requirement | Where it is in this repository |
 |---|---|
@@ -60,13 +167,6 @@ dark-spot detection is a first stage, followed by shape and context checks again
 
 ![Sentinel-1 case](docs/figures/fig5_sentinel1_case_study.png)
 
-Sentinel-1 GRD time series (Google Earth Engine) over an FPSO that exploded off Delta State, Nigeria,
-on 2 February 2022: the vessel is a bright point target before the event, and dark features consistent
-with possible surface slicks trail from its position 6 and 18 days after. NASA FIRMS thermal detections
-corroborate fire activity on the event date; they cannot establish oil composition or source by themselves. Other case
-studies: the MV Wakashio spill (Mauritius, 2020) and onshore pipeline-spill monitoring in the Niger
-Delta (radar change detection, Sentinel-2 indices, VIIRS fire data).
-
 ## How to run
 
 MATLAB-compatible (verified in GNU Octave), from `matlab/`:
@@ -79,6 +179,7 @@ Python 3.10+, from `python/`:
 
     pip install numpy scipy matplotlib pytest
     python run_all.py    # figures in docs/figures
+    python make_media.py # animations in docs/media (simulation)
     python -m pytest -q  # 5 tests
 
 Runtime: under a minute (Octave) or 10 s (Python) on a laptop. Raw data 2048 x 1024 complex samples.
@@ -94,4 +195,4 @@ omega-k, Doppler centroid and autofocus, and ambiguity (AASR, RASR) analysis.
 Cumming, I. G. and Wong, F. H. (2005). *Digital Processing of Synthetic Aperture Radar Data.* Artech House.
 Curlander, J. C. and McDonough, R. N. (1991). *Synthetic Aperture Radar: Systems and Signal Processing.* Wiley.
 
-MIT licence. Simulated data only, except the Sentinel-1 figure: contains modified Copernicus Sentinel data (2022).
+MIT licence for the code in this repository. LillieWatch and Triton are my personal projects; their code is private and only their outputs are shown here. Animations are made by `python/make_media.py`, `python/make_case_media.py` and `python/make_reel.py`. Real-data images contain modified Copernicus Sentinel data (2020 to 2025).
