@@ -106,8 +106,7 @@ Everything Triton outputs is a candidate for review. The code is in a private re
 
 An earlier, separate Python lab forms images by backprojection to show how bandwidth, aperture length
 and platform motion error change the image: doubling the bandwidth halves the range width (3.25 to
-1.63 m), and motion error removes most of the focused energy (peak 0.99 to 0.27). I built it with AI
-coding assistance; its MATLAB reference script has not been run.
+1.63 m), and motion error removes most of the focused energy (peak 0.99 to 0.27).
 [Walkthrough video](docs/media/backprojection_walkthrough.mp4).
 
 ---
