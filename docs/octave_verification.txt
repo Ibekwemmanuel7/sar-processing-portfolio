@@ -1,0 +1,17 @@
+alpha 1.00 model: IRW rg 4.360 az 5.486 m, PSLR rg -13.40 az -17.88 dB, ISLR rg -9.68 az -14.73 dB
+alpha 1.00 replica: T1    : IRW rg 4.46 az 5.51 m | PSLR rg -13.1 az -17.8 dB | ISLR rg -10.0 az -15.2 dB | loc err 0.00 / 0.00 m
+alpha 1.00 replica: T2    : IRW rg 4.47 az 5.50 m | PSLR rg -13.2 az -17.8 dB | ISLR rg -9.9 az -15.1 dB | loc err -0.12 / -0.11 m
+alpha 1.00 replica: T3    : IRW rg 4.47 az 5.52 m | PSLR rg -13.2 az -17.6 dB | ISLR rg -9.9 az -15.2 dB | loc err 0.09 / 0.06 m
+alpha 1.00 replica: T4    : IRW rg 4.47 az 5.52 m | PSLR rg -13.1 az -17.8 dB | ISLR rg -10.0 az -15.3 dB | loc err -0.02 / -0.11 m
+alpha 0.75 model: IRW rg 4.989 az 6.207 m, PSLR rg -21.42 az -26.90 dB, ISLR rg -15.95 az -21.99 dB
+alpha 0.75 posp: T1    : IRW rg 5.04 az 6.26 m | PSLR rg -20.7 az -27.0 dB | ISLR rg -16.3 az -22.9 dB | loc err 0.00 / 0.00 m
+alpha 0.75 posp: T2    : IRW rg 5.05 az 6.24 m | PSLR rg -20.9 az -26.5 dB | ISLR rg -16.3 az -22.5 dB | loc err 0.14 / -0.11 m
+alpha 0.75 posp: T3    : IRW rg 5.05 az 6.26 m | PSLR rg -20.7 az -27.5 dB | ISLR rg -16.2 az -22.9 dB | loc err 0.09 / 0.06 m
+alpha 0.75 posp: T4    : IRW rg 5.05 az 6.27 m | PSLR rg -20.5 az -26.3 dB | ISLR rg -16.3 az -22.7 dB | loc err -0.02 / -0.11 m
+alpha 0.75 model: IRW rg 4.989 az 6.207 m, PSLR rg -21.42 az -26.90 dB, ISLR rg -15.95 az -21.99 dB
+alpha 0.75 replica: T1    : IRW rg 5.03 az 6.26 m | PSLR rg -20.6 az -26.9 dB | ISLR rg -16.4 az -22.9 dB | loc err 0.00 / 0.00 m | PASS
+alpha 0.75 replica: T2    : IRW rg 5.04 az 6.24 m | PSLR rg -20.9 az -26.5 dB | ISLR rg -16.3 az -22.5 dB | loc err -0.12 / -0.11 m | PASS
+alpha 0.75 replica: T3    : IRW rg 5.04 az 6.26 m | PSLR rg -20.7 az -27.5 dB | ISLR rg -16.3 az -22.9 dB | loc err 0.09 / 0.06 m | PASS
+alpha 0.75 replica: T4    : IRW rg 5.04 az 6.27 m | PSLR rg -20.5 az -26.3 dB | ISLR rg -16.4 az -22.7 dB | loc err -0.02 / -0.11 m | PASS
+NESZ -28.78 to -22.17 dB (requirement <= -22.0 dB): PASS
+OVERALL: ALL REQUIREMENTS MET (weighted case)
